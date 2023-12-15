@@ -1,0 +1,9 @@
+train: dataset/hand_data/train/    # train images (relative to 'path') 
+val: dataset/hand_data/valid/   # val images (relative to 'path') 
+
+# Classes
+nc: 2  # number of classes
+names: [
+  'hand',
+  'background',
+]

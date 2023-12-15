@@ -1,0 +1,36 @@
+ninja_required_version = 1.3
+cxx = c++
+nvcc = /usr/local/cuda-11.4/bin/nvcc
+
+cflags = -pthread -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O2 -Wall -g -fstack-protector-strong -Wformat -Werror=format-security -g -fwrapv -O2 -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -fPIC -DWITH_CUDA -I/home/nvidia/.local/lib/python3.8/site-packages/torch/include -I/home/nvidia/.local/lib/python3.8/site-packages/torch/include/torch/csrc/api/include -I/home/nvidia/.local/lib/python3.8/site-packages/torch/include/TH -I/home/nvidia/.local/lib/python3.8/site-packages/torch/include/THC -I/usr/local/cuda-11.4/include -I/usr/include/python3.8 -c
+post_cflags = -DTORCH_API_INCLUDE_EXTENSION_H '-DPYBIND11_COMPILER_TYPE="_gcc"' '-DPYBIND11_STDLIB="_libstdcpp"' '-DPYBIND11_BUILD_ABI="_cxxabi1013"' -DTORCH_EXTENSION_NAME=nms_rotated_ext -D_GLIBCXX_USE_CXX11_ABI=1 -std=c++14
+cuda_cflags = -DWITH_CUDA -I/home/nvidia/.local/lib/python3.8/site-packages/torch/include -I/home/nvidia/.local/lib/python3.8/site-packages/torch/include/torch/csrc/api/include -I/home/nvidia/.local/lib/python3.8/site-packages/torch/include/TH -I/home/nvidia/.local/lib/python3.8/site-packages/torch/include/THC -I/usr/local/cuda-11.4/include -I/usr/include/python3.8 -c
+cuda_post_cflags = -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_BFLOAT16_CONVERSIONS__ -D__CUDA_NO_HALF2_OPERATORS__ --expt-relaxed-constexpr --compiler-options ''"'"'-fPIC'"'"'' -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_HALF2_OPERATORS__ -DTORCH_API_INCLUDE_EXTENSION_H '-DPYBIND11_COMPILER_TYPE="_gcc"' '-DPYBIND11_STDLIB="_libstdcpp"' '-DPYBIND11_BUILD_ABI="_cxxabi1013"' -DTORCH_EXTENSION_NAME=nms_rotated_ext -D_GLIBCXX_USE_CXX11_ABI=1 -gencode=arch=compute_72,code=compute_72 -gencode=arch=compute_72,code=sm_72 -std=c++14
+cuda_dlink_post_cflags = 
+ldflags = 
+
+rule compile
+  command = $cxx -MMD -MF $out.d $cflags -c $in -o $out $post_cflags
+  depfile = $out.d
+  deps = gcc
+
+rule cuda_compile
+  depfile = $out.d
+  deps = gcc
+  command = $nvcc  $cuda_cflags -c $in -o $out $cuda_post_cflags
+
+
+
+
+
+build /home/nvidia/yolov5_obb/utils/nms_rotated/build/temp.linux-aarch64-3.8/src/nms_rotated_cpu.o: compile /home/nvidia/yolov5_obb/utils/nms_rotated/src/nms_rotated_cpu.cpp
+build /home/nvidia/yolov5_obb/utils/nms_rotated/build/temp.linux-aarch64-3.8/src/nms_rotated_ext.o: compile /home/nvidia/yolov5_obb/utils/nms_rotated/src/nms_rotated_ext.cpp
+build /home/nvidia/yolov5_obb/utils/nms_rotated/build/temp.linux-aarch64-3.8/src/nms_rotated_cuda.o: cuda_compile /home/nvidia/yolov5_obb/utils/nms_rotated/src/nms_rotated_cuda.cu
+build /home/nvidia/yolov5_obb/utils/nms_rotated/build/temp.linux-aarch64-3.8/src/poly_nms_cuda.o: cuda_compile /home/nvidia/yolov5_obb/utils/nms_rotated/src/poly_nms_cuda.cu
+
+
+
+
+
+
+

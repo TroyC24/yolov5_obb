@@ -1,0 +1,5 @@
+# ninja log v5
+1	42102	1687094370790419577	/home/nvidia/yolov5_obb/utils/nms_rotated/build/temp.linux-aarch64-3.8/src/nms_rotated_cpu.o	86d6019db671b2dc
+3	77408	1687094406119988416	/home/nvidia/yolov5_obb/utils/nms_rotated/build/temp.linux-aarch64-3.8/src/poly_nms_cuda.o	947c7a119f2fd206
+3	89656	1687094418368532799	/home/nvidia/yolov5_obb/utils/nms_rotated/build/temp.linux-aarch64-3.8/src/nms_rotated_cuda.o	2a908c1a777da26f
+2	97028	1687094425680857906	/home/nvidia/yolov5_obb/utils/nms_rotated/build/temp.linux-aarch64-3.8/src/nms_rotated_ext.o	342145be8b666d5
